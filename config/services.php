@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'api' => [
+        'base_uri' => env('API_URL', 'https://api.example.com/api'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],
