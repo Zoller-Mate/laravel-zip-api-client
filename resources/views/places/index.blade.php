@@ -1,0 +1,191 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Flash Messages -->
+        @if ($errors->any())
+            <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500">
+                <div class="text-red-700">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="mb-4 p-4 bg-green-50 border-l-4 border-green-500">
+                <p class="text-green-700">{{ session('success') }}</p>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500">
+                <p class="text-red-700">{{ session('error') }}</p>
+            </div>
+        @endif
+
+        <!-- Header -->
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 bg-white border-b border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-3xl font-bold">Városok</h1>
+                    @if ($isAuthenticated)
+                        <a href="{{ route('places.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Új város
+                        </a>
+                    @endif
+                </div>
+
+                <!-- Export -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="flex gap-2">
+                        <a href="{{ route('places.export.csv') }}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                            CSV Export
+                        </a>
+                        <a href="{{ route('places.export.pdf') }}" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                            PDF Export
+                        </a>
+                    </div>
+                </div>
+
+                <!-- County Filter -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Megye kiválasztása:</label>
+                    <select id="countySelect" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="">-- Válassz egy megyét --</option>
+                        @foreach($counties as $county)
+                            <option value="{{ $county->id }}">{{ $county->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- ABC Filter (Initially hidden) -->
+                <div id="letterButtons" style="display:none;" class="mb-4">
+                    <h3 class="font-bold mb-2">Kezdőbetű szerint:</h3>
+                    <div id="letters" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg" id="placesTableContainer" style="display:none;">
+            <table class="w-full border-collapse" id="placesTable">
+                <thead class="bg-gray-100 border-b">
+                    <tr>
+                        <th class="px-6 py-3 text-left">Város</th>
+                        <th class="px-6 py-3 text-left">Megye</th>
+                        <th class="px-6 py-3 text-left">Irányítószám</th>
+                        <th class="px-6 py-3 text-left">Műveletek</th>
+                    </tr>
+                </thead>
+                <tbody id="placesTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- No data message -->
+        <div id="noDataMessage" class="bg-white p-6 rounded shadow text-center text-gray-500">
+            Válassz egy megyét a városok listázásához.
+        </div>
+    </div>
+</div>
+
+<script>
+    const countySelect = document.getElementById('countySelect');
+    const letterButtons = document.getElementById('letterButtons');
+    const letters = document.getElementById('letters');
+    const placesTable = document.getElementById('placesTable');
+    const placesTableBody = document.getElementById('placesTableBody');
+    const placesTableContainer = document.getElementById('placesTableContainer');
+    const noDataMessage = document.getElementById('noDataMessage');
+
+    countySelect.addEventListener('change', function() {
+        const countyId = this.value;
+        if (!countyId) {
+            letterButtons.style.display = 'none';
+            placesTableContainer.style.display = 'none';
+            noDataMessage.style.display = 'block';
+            return;
+        }
+
+        // Fetch available letters
+        fetch(`/places?county_id=${countyId}&letters_only=true`)
+            .then(r => r.json())
+            .then(data => {
+                letters.innerHTML = '';
+                if (data.length === 0) {
+                    letterButtons.style.display = 'none';
+                    placesTableContainer.style.display = 'none';
+                    noDataMessage.style.display = 'block';
+                    return;
+                }
+
+                data.forEach(letter => {
+                    const btn = document.createElement('button');
+                    btn.textContent = letter;
+                    btn.type = 'button';
+                    btn.className = 'px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600';
+                    btn.onclick = () => fetchPlacesByLetter(countyId, letter);
+                    letters.appendChild(btn);
+                });
+
+                letterButtons.style.display = 'block';
+                noDataMessage.style.display = 'none';
+            })
+            .catch(err => {
+                console.error('Hiba betűk lekérésekor:', err);
+                letterButtons.style.display = 'none';
+                placesTableContainer.style.display = 'none';
+                noDataMessage.style.display = 'block';
+            });
+    });
+
+    function fetchPlacesByLetter(countyId, letter) {
+        fetch(`/places?county_id=${countyId}&letter=${encodeURIComponent(letter)}`)
+            .then(r => r.json())
+            .then(data => {
+                placesTableBody.innerHTML = '';
+
+                if (!data || data.length === 0) {
+                    placesTableContainer.style.display = 'none';
+                    noDataMessage.textContent = 'Nincs város ezzel a kezdőbetűvel.';
+                    noDataMessage.style.display = 'block';
+                    return;
+                }
+
+                data.forEach(place => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b hover:bg-gray-50';
+
+                    const county = place.county ? place.county.name : 'N/A';
+                    const postalCode = place.postal_code ? place.postal_code.code : 'N/A';
+                    const operations = `
+                        <a href="/places/${place.id}" class="text-blue-600 hover:underline">Nézet</a>
+                        @if ($isAuthenticated)
+                            <a href="/places/${place.id}/edit" class="text-yellow-600 hover:underline">Módosítás</a>
+                        @endif
+                    `;
+
+                    tr.innerHTML = `
+                        <td class="px-6 py-4">${place.name}</td>
+                        <td class="px-6 py-4">${county}</td>
+                        <td class="px-6 py-4">${postalCode}</td>
+                        <td class="px-6 py-4 space-x-2">${operations}</td>
+                    `;
+                    placesTableBody.appendChild(tr);
+                });
+
+                placesTableContainer.style.display = 'table';
+                noDataMessage.style.display = 'none';
+            })
+            .catch(err => {
+                console.error('Hiba városok lekérésekor:', err);
+                placesTableContainer.style.display = 'none';
+                noDataMessage.textContent = 'Hiba történt az adatok lekérésekor.';
+                noDataMessage.style.display = 'block';
+            });
+    }
+</script>
+@endsection
