@@ -237,14 +237,24 @@ class CountyController extends Controller
     private function getCounties($response)
     {
         $responseBody = json_decode($response->body(), false);
-        $data = $responseBody->data ?? null;
-        $results = [];
-
-        if (!empty($data)) {
-            $results = $data->counties ?? [];
+        
+        // If response is an array directly, return it
+        if (is_array($responseBody)) {
+            return $responseBody;
         }
-
-        return $results;
+        
+        // If response has data.counties structure
+        $data = $responseBody->data ?? null;
+        if (!empty($data) && isset($data->counties)) {
+            return $data->counties;
+        }
+        
+        // If response has counties directly
+        if (isset($responseBody->counties)) {
+            return $responseBody->counties;
+        }
+        
+        return [];
     }
 
     /**
@@ -253,7 +263,23 @@ class CountyController extends Controller
     private function getCounty($response)
     {
         $responseBody = json_decode($response->body(), false);
+        
+        // If response is an object directly (single county)
+        if (isset($responseBody->id) && isset($responseBody->name)) {
+            return $responseBody;
+        }
+        
+        // If response has data.county structure
         $data = $responseBody->data ?? null;
-        return !empty($data) ? $data->county ?? [] : [];
+        if (!empty($data) && isset($data->county)) {
+            return $data->county;
+        }
+        
+        // If response has county directly
+        if (isset($responseBody->county)) {
+            return $responseBody->county;
+        }
+        
+        return (object)[];
     }
 }

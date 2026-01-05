@@ -306,14 +306,24 @@ class PlaceController extends Controller
     private function getPlaces($response)
     {
         $responseBody = json_decode($response->body(), false);
-        $data = $responseBody->data ?? null;
-        $results = [];
-
-        if (!empty($data)) {
-            $results = $data->places ?? [];
+        
+        // If response is an array directly, return it
+        if (is_array($responseBody)) {
+            return $responseBody;
         }
-
-        return $results;
+        
+        // If response has data.places structure
+        $data = $responseBody->data ?? null;
+        if (!empty($data) && isset($data->places)) {
+            return $data->places;
+        }
+        
+        // If response has places directly
+        if (isset($responseBody->places)) {
+            return $responseBody->places;
+        }
+        
+        return [];
     }
 
     /**
@@ -322,8 +332,24 @@ class PlaceController extends Controller
     private function getPlace($response)
     {
         $responseBody = json_decode($response->body(), false);
+        
+        // If response is an object directly (single place)
+        if (isset($responseBody->id) && isset($responseBody->name)) {
+            return $responseBody;
+        }
+        
+        // If response has data.place structure
         $data = $responseBody->data ?? null;
-        return !empty($data) ? $data->place ?? [] : [];
+        if (!empty($data) && isset($data->place)) {
+            return $data->place;
+        }
+        
+        // If response has place directly
+        if (isset($responseBody->place)) {
+            return $responseBody->place;
+        }
+        
+        return (object)[];
     }
 
     /**
@@ -332,14 +358,24 @@ class PlaceController extends Controller
     private function getCounties($response)
     {
         $responseBody = json_decode($response->body(), false);
-        $data = $responseBody->data ?? null;
-        $results = [];
-
-        if (!empty($data)) {
-            $results = $data->counties ?? [];
+        
+        // If response is an array directly, return it
+        if (is_array($responseBody)) {
+            return $responseBody;
         }
-
-        return $results;
+        
+        // If response has data.counties structure
+        $data = $responseBody->data ?? null;
+        if (!empty($data) && isset($data->counties)) {
+            return $data->counties;
+        }
+        
+        // If response has counties directly
+        if (isset($responseBody->counties)) {
+            return $responseBody->counties;
+        }
+        
+        return [];
     }
 
     /**
@@ -348,13 +384,23 @@ class PlaceController extends Controller
     private function getPostalCodes($response)
     {
         $responseBody = json_decode($response->body(), false);
-        $data = $responseBody->data ?? null;
-        $results = [];
-
-        if (!empty($data)) {
-            $results = $data->postal_codes ?? [];
+        
+        // If response is an array directly, return it
+        if (is_array($responseBody)) {
+            return $responseBody;
         }
-
-        return $results;
+        
+        // If response has data.postal_codes structure
+        $data = $responseBody->data ?? null;
+        if (!empty($data) && isset($data->postal_codes)) {
+            return $data->postal_codes;
+        }
+        
+        // If response has postal_codes directly
+        if (isset($responseBody->postal_codes)) {
+            return $responseBody->postal_codes;
+        }
+        
+        return [];
     }
 }

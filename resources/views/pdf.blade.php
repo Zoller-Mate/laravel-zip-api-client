@@ -65,6 +65,7 @@
 </head>
 <body>
     <div class="header">
+        <img src="{{ public_path('images/logo.svg') }}" alt="Logo" style="max-width: 120px; height: 60px; margin: 0 auto 10px; display: block;">
         <h2>{{ config('app.name', 'ZipCodes') }}</h2>
     </div>
     <main>
