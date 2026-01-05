@@ -1,6 +1,9 @@
 @extends('pdf')
 
+@section('page-title', 'Megyék')
+
 @section('content')
+    <br>
     <table>
         <thead>
             <tr>

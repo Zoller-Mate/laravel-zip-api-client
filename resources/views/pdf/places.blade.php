@@ -1,16 +1,19 @@
 @extends('pdf')
 
+@section('page-title', 'Városok')
+
 @section('content')
+    <br>
     <table>
         <thead>
             <tr>
                 <th colspan="4">{{ __('Városok') }}</th>
             </tr>
             <tr>
+                <th>#</th>
                 <th>{{ __('Város') }}</th>
                 <th>{{ __('Megye') }}</th>
                 <th>{{ __('Irányítószám') }}</th>
-                <th>#</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +23,7 @@
                 @else
                     <tr class="odd">
                 @endif
+                    <td>{{$entity->id}}</td>
                     <td>{{$entity->name}}</td>
                     <td>{{$entity->county->name ?? 'N/A'}}</td>
                     <td>
@@ -29,7 +33,6 @@
                             N/A
                         @endif
                     </td>
-                    <td>{{$entity->id}}</td>
                 </tr>
             @endforeach
         </tbody>
