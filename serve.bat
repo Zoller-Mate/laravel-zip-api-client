@@ -1,0 +1,3 @@
+@echo off
+echo Starting Laravel Frontend on port 8001...
+php artisan serve --port=8001
