@@ -33,7 +33,7 @@
                     <h1 class="text-3xl font-bold">Megyék</h1>
                     @if ($isAuthenticated)
                         <a href="{{ route('counties.create') }}" style="padding:10px 16px; background:#2563eb; color:#fff; border:1px solid #1d4ed8; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
-                            ➕ Új megye
+                            Új megye
                         </a>
                     @endif
                 </div>
@@ -45,10 +45,10 @@
                     </form>
                     <div style="display:flex; gap:12px; flex-wrap:wrap;">
                         <a href="{{ route('counties.export.csv') }}" style="padding:10px 16px; background:#16a34a; color:#fff; border:1px solid #0f6a32; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
-                            📄 CSV Export
+                            CSV Export
                         </a>
                         <a href="{{ route('counties.export.pdf') }}" style="padding:10px 16px; background:#dc2626; color:#fff; border:1px solid #991b1b; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
-                            📑 PDF Export
+                            PDF Export
                         </a>
                     </div>
                 </div>
