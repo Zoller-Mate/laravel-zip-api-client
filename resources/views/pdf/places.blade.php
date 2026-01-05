@@ -3,7 +3,6 @@
 @section('page-title', 'Városok')
 
 @section('content')
-    <br>
     <table>
         <thead>
             <tr>
