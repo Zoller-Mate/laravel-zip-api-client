@@ -265,8 +265,18 @@ class PlaceController extends Controller
      */
     public function exportCsv(Request $request)
     {
-        $needle = $request->get('needle');
-        $url = $needle ? "places?needle=" . urlencode($needle) : "places";
+        $countyId = $request->get('county_id');
+        $letter = $request->get('letter');
+        
+        // Build URL with filters
+        $params = [];
+        if ($countyId) $params[] = "county_id=" . urlencode($countyId);
+        if ($letter) $params[] = "letter=" . urlencode($letter);
+        
+        $url = "places";
+        if (!empty($params)) {
+            $url .= "?" . implode("&", $params);
+        }
 
         try {
             $response = Http::api()->get($url);
@@ -281,7 +291,13 @@ class PlaceController extends Controller
             $csv = "ID,Város,Megye,Irányítószám\n";
             foreach ($places as $place) {
                 $county = $place->county->name ?? 'N/A';
-                $postalCode = $place->postal_code->code ?? 'N/A';
+                
+                // Handle postal_codes array
+                $postalCode = 'N/A';
+                if (isset($place->postal_codes) && is_array($place->postal_codes) && count($place->postal_codes) > 0) {
+                    $postalCode = $place->postal_codes[0]->postal_code ?? 'N/A';
+                }
+                
                 $csv .= "{$place->id},{$place->name},$county,$postalCode\n";
             }
 
@@ -299,8 +315,21 @@ class PlaceController extends Controller
      */
     public function exportPdf(Request $request)
     {
-        $needle = $request->get('needle');
-        $url = $needle ? "places?needle=" . urlencode($needle) : "places";
+        // Increase memory limit for large PDFs
+        ini_set('memory_limit', '512M');
+        
+        $countyId = $request->get('county_id');
+        $letter = $request->get('letter');
+        
+        // Build URL with filters
+        $params = [];
+        if ($countyId) $params[] = "county_id=" . urlencode($countyId);
+        if ($letter) $params[] = "letter=" . urlencode($letter);
+        
+        $url = "places";
+        if (!empty($params)) {
+            $url .= "?" . implode("&", $params);
+        }
 
         try {
             $response = Http::api()->get($url);

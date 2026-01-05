@@ -22,7 +22,13 @@
                 @endif
                     <td>{{$entity->name}}</td>
                     <td>{{$entity->county->name ?? 'N/A'}}</td>
-                    <td>{{$entity->postal_code->code ?? 'N/A'}}</td>
+                    <td>
+                        @if(isset($entity->postal_codes) && is_array($entity->postal_codes) && count($entity->postal_codes) > 0)
+                            {{ $entity->postal_codes[0]->postal_code ?? 'N/A' }}
+                        @else
+                            N/A
+                        @endif
+                    </td>
                     <td>{{$entity->id}}</td>
                 </tr>
             @endforeach

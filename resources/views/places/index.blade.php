@@ -40,10 +40,10 @@
 
                 <!-- Export -->
                 <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
-                    <a href="{{ route('places.export.csv') }}" style="padding:10px 16px; background:#16a34a; color:#fff; border:1px solid #0f6a32; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
+                    <a href="{{ route('places.export.csv') }}" id="csvExportBtn" style="padding:10px 16px; background:#16a34a; color:#fff; border:1px solid #0f6a32; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
                         CSV Export
                     </a>
-                    <a href="{{ route('places.export.pdf') }}" style="padding:10px 16px; background:#dc2626; color:#fff; border:1px solid #991b1b; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
+                    <a href="{{ route('places.export.pdf') }}" id="pdfExportBtn" style="padding:10px 16px; background:#dc2626; color:#fff; border:1px solid #991b1b; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
                         PDF Export
                     </a>
                 </div>
@@ -98,9 +98,36 @@
     const placesTableBody = document.getElementById('placesTableBody');
     const placesTableContainer = document.getElementById('placesTableContainer');
     const noDataMessage = document.getElementById('noDataMessage');
+    const csvExportBtn = document.getElementById('csvExportBtn');
+    const pdfExportBtn = document.getElementById('pdfExportBtn');
+    
+    let currentCountyId = null;
+    let currentLetter = null;
+    
+    function updateExportLinks() {
+        let csvUrl = '{{ route("places.export.csv") }}';
+        let pdfUrl = '{{ route("places.export.pdf") }}';
+        
+        const params = new URLSearchParams();
+        if (currentCountyId) params.append('county_id', currentCountyId);
+        if (currentLetter) params.append('letter', currentLetter);
+        
+        const queryString = params.toString();
+        if (queryString) {
+            csvExportBtn.href = csvUrl + '?' + queryString;
+            pdfExportBtn.href = pdfUrl + '?' + queryString;
+        } else {
+            csvExportBtn.href = csvUrl;
+            pdfExportBtn.href = pdfUrl;
+        }
+    }
 
     countySelect.addEventListener('change', function() {
         const countyId = this.value;
+        currentCountyId = countyId;
+        currentLetter = null;
+        updateExportLinks();
+        
         if (!countyId) {
             letterButtons.style.display = 'none';
             placesTableContainer.style.display = 'none';
@@ -149,6 +176,9 @@
     });
 
     function fetchPlacesByLetter(countyId, letter) {
+        currentLetter = letter;
+        updateExportLinks();
+        
         fetch(`/places?county_id=${countyId}&letter=${encodeURIComponent(letter)}`)
             .then(r => r.json())
             .then(data => {
