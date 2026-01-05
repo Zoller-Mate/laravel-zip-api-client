@@ -39,16 +39,16 @@
                 </div>
 
                 <!-- Search & Export -->
-                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <form method="GET" action="{{ route('counties.index') }}" class="w-full md:w-1/2">
-                        <input type="text" name="needle" placeholder="Keresés..." value="{{ request('needle') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
+                    <form method="GET" action="{{ route('counties.index') }}" style="width:100%;">
+                        <input type="text" name="needle" placeholder="Keresés..." value="{{ request('needle') }}" style="width:100%; padding:8px 12px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
                     </form>
-                    <div class="flex flex-wrap gap-2">
-                        <a href="{{ route('counties.export.csv') }}" class="px-4 py-2 rounded font-semibold" style="background:#16a34a; color:#fff; border:1px solid #0f6a32; display:inline-block; text-decoration:none;">
-                            CSV Export
+                    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                        <a href="{{ route('counties.export.csv') }}" style="padding:10px 16px; background:#16a34a; color:#fff; border:1px solid #0f6a32; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
+                            📄 CSV Export
                         </a>
-                        <a href="{{ route('counties.export.pdf') }}" class="px-4 py-2 rounded font-semibold" style="background:#dc2626; color:#fff; border:1px solid #991b1b; display:inline-block; text-decoration:none;">
-                            PDF Export
+                        <a href="{{ route('counties.export.pdf') }}" style="padding:10px 16px; background:#dc2626; color:#fff; border:1px solid #991b1b; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
+                            📑 PDF Export
                         </a>
                     </div>
                 </div>

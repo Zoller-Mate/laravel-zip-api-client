@@ -39,15 +39,13 @@
                 </div>
 
                 <!-- Export -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div class="flex gap-2">
-                        <a href="{{ route('places.export.csv') }}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                            CSV Export
-                        </a>
-                        <a href="{{ route('places.export.pdf') }}" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-                            PDF Export
-                        </a>
-                    </div>
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+                    <a href="{{ route('places.export.csv') }}" style="padding:10px 16px; background:#16a34a; color:#fff; border:1px solid #0f6a32; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
+                        📄 CSV Export
+                    </a>
+                    <a href="{{ route('places.export.pdf') }}" style="padding:10px 16px; background:#dc2626; color:#fff; border:1px solid #991b1b; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
+                        📑 PDF Export
+                    </a>
                 </div>
 
                 <!-- County Filter -->
