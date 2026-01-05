@@ -37,20 +37,16 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="postal_code_id" class="block text-gray-700 font-bold mb-2">Irányítószám</label>
-                        <select id="postal_code_id" name="postal_code_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">-- Válassz egy irányítószámot --</option>
-                            @foreach($postalCodes as $postalCode)
-                                <option value="{{ $postalCode->id }}" {{ old('postal_code_id', $entity->postal_code->id ?? '') == $postalCode->id ? 'selected' : '' }}>{{ $postalCode->code }}</option>
-                            @endforeach
-                        </select>
+                        <label for="postal_code" class="block text-gray-700 font-bold mb-2">Irányítószám</label>
+                        <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', isset($entity->postal_codes[0]) ? $entity->postal_codes[0]->postal_code : '') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="pl. 8000" maxlength="4" pattern="[0-9]{4}" />
+                        <small style="color:#666; font-size:12px;">4 jegyű irányítószám (pl. 8000)</small>
                     </div>
 
-                    <div class="flex space-x-4">
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    <div style="display:flex; gap:16px;">
+                        <button type="submit" style="padding:8px 16px; background:#2563eb; color:#fff; border:1px solid #1d4ed8; border-radius:6px; font-weight:600; cursor:pointer;">
                             Frissítés
                         </button>
-                        <a href="{{ route('places.index') }}" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+                        <a href="{{ route('places.index') }}" style="padding:8px 16px; background:#4b5563; color:#fff; border:1px solid #374151; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
                             Vissza
                         </a>
                     </div>

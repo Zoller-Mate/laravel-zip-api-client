@@ -128,7 +128,7 @@ class PlaceController extends Controller
                 ->post('/places', [
                     'name' => $request->get('name'),
                     'county_id' => $request->get('county_id'),
-                    'postal_code_id' => $request->get('postal_code_id'),
+                    'postal_code' => $request->get('postal_code'),
                 ]);
 
             if ($response->failed()) {
@@ -214,7 +214,7 @@ class PlaceController extends Controller
                 ->put("/places/$id", [
                     'name' => $request->get('name'),
                     'county_id' => $request->get('county_id'),
-                    'postal_code_id' => $request->get('postal_code_id'),
+                    'postal_code' => $request->get('postal_code'),
                 ]);
 
             if ($response->successful()) {

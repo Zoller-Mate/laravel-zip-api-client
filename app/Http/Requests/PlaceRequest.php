@@ -24,7 +24,7 @@ class PlaceRequest extends FormRequest
         return [
             'name' => 'required|string|min:2|max:255',
             'county_id' => 'required|integer|min:1',
-            'postal_code_id' => 'required|integer|min:1',
+            'postal_code' => 'required|string|size:4|regex:/^[0-9]{4}$/',
         ];
     }
 
@@ -37,7 +37,9 @@ class PlaceRequest extends FormRequest
             'name.required' => 'A város neve kötelező.',
             'name.min' => 'A város neve legalább 2 karakter hosszú kell, hogy legyen.',
             'county_id.required' => 'Válassz ki egy megyét.',
-            'postal_code_id.required' => 'Válassz ki egy irányítószámot.',
+            'postal_code.required' => 'Az irányítószám kötelező.',
+            'postal_code.size' => 'Az irányítószám pontosan 4 karakter kell, hogy legyen.',
+            'postal_code.regex' => 'Az irányítószám csak számokat tartalmazhat.',
         ];
     }
 }

@@ -26,11 +26,11 @@
                         <input type="text" id="name" name="name" value="{{ old('name', $entity->name ?? '') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Megye neve" />
                     </div>
 
-                    <div class="flex space-x-4">
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    <div style="display:flex; gap:16px;">
+                        <button type="submit" style="padding:8px 16px; background:#2563eb; color:#fff; border:1px solid #1d4ed8; border-radius:6px; font-weight:600; cursor:pointer;">
                             Frissítés
                         </button>
-                        <a href="{{ route('counties.index') }}" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+                        <a href="{{ route('counties.index') }}" style="padding:8px 16px; background:#4b5563; color:#fff; border:1px solid #374151; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
                             Vissza
                         </a>
                     </div>
