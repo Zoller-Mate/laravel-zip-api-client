@@ -32,8 +32,8 @@
                 <div class="flex justify-between items-center mb-4">
                     <h1 class="text-3xl font-bold">Megyék</h1>
                     @if ($isAuthenticated)
-                        <a href="{{ route('counties.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                            Új megye
+                        <a href="{{ route('counties.create') }}" style="padding:10px 16px; background:#2563eb; color:#fff; border:1px solid #1d4ed8; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
+                            ➕ Új megye
                         </a>
                     @endif
                 </div>
