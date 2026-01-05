@@ -344,8 +344,10 @@ class PlaceController extends Controller
             $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.places', ['entities' => $places]);
             return $pdf->download('places.pdf');
         } catch (\Exception $e) {
+            \Log::error('PDF Export Error: ' . $e->getMessage());
+            \Log::error('Stack: ' . $e->getTraceAsString());
             return redirect()->route('places.index')
-                ->with('error', "PDF export sikertelen");
+                ->with('error', "PDF export sikertelen: " . $e->getMessage());
         }
     }
 

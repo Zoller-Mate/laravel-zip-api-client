@@ -104,7 +104,13 @@
 <body>
     <!-- Fixed Header - appears on every page -->
     <div class="page-header">
-        <img src="{{ public_path('images/logo.png') }}" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+        @php
+            $logoPath = public_path('images/logo.png');
+            $logoExists = file_exists($logoPath);
+        @endphp
+        @if($logoExists)
+            <img src="{{ $logoPath }}" alt="Logo" class="header-logo">
+        @endif
         <div class="header-title">
             @yield('page-title', config('app.name', 'ZipCodes'))
         </div>
