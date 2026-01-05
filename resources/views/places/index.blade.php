@@ -71,13 +71,13 @@
 
         <!-- Table -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg" id="placesTableContainer" style="display:none;">
-            <table class="w-full border-collapse" id="placesTable">
+            <table class="w-full border-collapse table-fixed" style="table-layout:fixed;" id="placesTable">
                 <thead class="bg-gray-100 border-b">
                     <tr>
-                        <th class="px-6 py-3 text-left">Város</th>
-                        <th class="px-6 py-3 text-left">Megye</th>
-                        <th class="px-6 py-3 text-left">Irányítószám</th>
-                        <th class="px-6 py-3 text-left">Műveletek</th>
+                        <th class="px-6 py-3" style="text-align:center; vertical-align:middle;">Város</th>
+                        <th class="px-6 py-3" style="text-align:center; vertical-align:middle;">Megye</th>
+                        <th class="px-6 py-3" style="text-align:center; vertical-align:middle;">Irányítószám</th>
+                        <th class="px-6 py-3" style="text-align:center; vertical-align:middle;">Műveletek</th>
                     </tr>
                 </thead>
                 <tbody id="placesTableBody">
@@ -126,7 +126,15 @@
                     const btn = document.createElement('button');
                     btn.textContent = letter;
                     btn.type = 'button';
-                    btn.className = 'px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600';
+                    btn.style.background = '#2563eb';
+                    btn.style.color = '#fff';
+                    btn.style.border = '1px solid #1d4ed8';
+                    btn.style.borderRadius = '6px';
+                    btn.style.padding = '6px 10px';
+                    btn.style.fontWeight = '600';
+                    btn.style.cursor = 'pointer';
+                    btn.onmouseenter = () => btn.style.background = '#1d4ed8';
+                    btn.onmouseleave = () => btn.style.background = '#2563eb';
                     btn.onclick = () => fetchPlacesByLetter(countyId, letter);
                     letters.appendChild(btn);
                 });
@@ -169,15 +177,15 @@
                     `;
 
                     tr.innerHTML = `
-                        <td class="px-6 py-4">${place.name}</td>
-                        <td class="px-6 py-4">${county}</td>
-                        <td class="px-6 py-4">${postalCode}</td>
-                        <td class="px-6 py-4 space-x-2">${operations}</td>
+                        <td class="px-6 py-4" style="text-align:center; vertical-align:middle;">${place.name}</td>
+                        <td class="px-6 py-4" style="text-align:center; vertical-align:middle;">${county}</td>
+                        <td class="px-6 py-4" style="text-align:center; vertical-align:middle;">${postalCode}</td>
+                        <td class="px-6 py-4 space-x-2" style="text-align:center; vertical-align:middle; white-space:nowrap;">${operations}</td>
                     `;
                     placesTableBody.appendChild(tr);
-                });
+                    });
 
-                placesTableContainer.style.display = 'table';
+                    placesTableContainer.style.display = 'block';
                 noDataMessage.style.display = 'none';
             })
             .catch(err => {

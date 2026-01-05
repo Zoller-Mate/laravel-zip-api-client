@@ -22,7 +22,17 @@ class PlaceController extends Controller
             if ($lettersOnly && $countyId) {
                 $response = Http::api()->get("/places?county_id=$countyId&distinct_letters=true");
                 if ($response->successful()) {
-                    $letters = json_decode($response->body())->data->letters ?? [];
+                    $body = json_decode($response->body(), false);
+
+                    // Accept multiple response shapes
+                    if (is_array($body)) {
+                        return response()->json($body);
+                    }
+
+                    $letters = $body->letters
+                        ?? ($body->data->letters ?? [])
+                        ?? [];
+
                     return response()->json($letters);
                 }
                 return response()->json([]);
@@ -32,7 +42,17 @@ class PlaceController extends Controller
             if ($countyId && $letter) {
                 $response = Http::api()->get("/places?county_id=$countyId&letter=" . urlencode($letter));
                 if ($response->successful()) {
-                    $places = json_decode($response->body())->data->places ?? [];
+                    $body = json_decode($response->body(), false);
+
+                    // Accept multiple response shapes
+                    if (is_array($body)) {
+                        return response()->json($body);
+                    }
+
+                    $places = $body->places
+                        ?? ($body->data->places ?? [])
+                        ?? [];
+
                     return response()->json($places);
                 }
                 return response()->json([]);

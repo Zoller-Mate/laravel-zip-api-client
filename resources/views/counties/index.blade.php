@@ -39,15 +39,15 @@
                 </div>
 
                 <!-- Search & Export -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <form method="GET" action="{{ route('counties.index') }}" class="md:col-span-1">
+                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <form method="GET" action="{{ route('counties.index') }}" class="w-full md:w-1/2">
                         <input type="text" name="needle" placeholder="Keresés..." value="{{ request('needle') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md" />
                     </form>
-                    <div class="flex gap-2 md:col-span-2">
-                        <a href="{{ route('counties.export.csv') }}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                    <div class="flex flex-wrap gap-2">
+                        <a href="{{ route('counties.export.csv') }}" class="px-4 py-2 rounded font-semibold" style="background:#16a34a; color:#fff; border:1px solid #0f6a32; display:inline-block; text-decoration:none;">
                             CSV Export
                         </a>
-                        <a href="{{ route('counties.export.pdf') }}" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                        <a href="{{ route('counties.export.pdf') }}" class="px-4 py-2 rounded font-semibold" style="background:#dc2626; color:#fff; border:1px solid #991b1b; display:inline-block; text-decoration:none;">
                             PDF Export
                         </a>
                     </div>
@@ -57,20 +57,20 @@
 
         <!-- Table -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <table class="w-full border-collapse">
+            <table class="w-full border-collapse table-fixed" style="table-layout:fixed;">
                 <thead class="bg-gray-100 border-b">
                     <tr>
-                        <th class="px-6 py-3 text-left">ID</th>
-                        <th class="px-6 py-3 text-left">Név</th>
-                        <th class="px-6 py-3 text-left">Műveletek</th>
+                        <th class="px-6 py-3" style="text-align:center; vertical-align:middle;">ID</th>
+                        <th class="px-6 py-3" style="text-align:center; vertical-align:middle;">Név</th>
+                        <th class="px-6 py-3" style="text-align:center; vertical-align:middle;">Műveletek</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($entities as $county)
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="px-6 py-4">{{ $county->id }}</td>
-                            <td class="px-6 py-4">{{ $county->name }}</td>
-                            <td class="px-6 py-4 space-x-2">
+                            <td class="px-6 py-4" style="text-align:center; vertical-align:middle;">{{ $county->id }}</td>
+                            <td class="px-6 py-4" style="text-align:center; vertical-align:middle;">{{ $county->name }}</td>
+                            <td class="px-6 py-4 space-x-2" style="text-align:center; vertical-align:middle; white-space:nowrap;">
                                 <a href="{{ route('counties.show', $county->id) }}" class="text-blue-600 hover:underline">Nézet</a>
                                 @if ($isAuthenticated)
                                     <a href="{{ route('counties.edit', $county->id) }}" class="text-yellow-600 hover:underline">Módosítás</a>
