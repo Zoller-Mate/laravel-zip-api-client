@@ -23,11 +23,7 @@
                     <div class="mb-4">
                         <span class="block text-gray-700 font-bold">Irányítószám:</span>
                         <span class="text-gray-900">
-                            @if(isset($entity->postal_codes) && is_array($entity->postal_codes) && count($entity->postal_codes) > 0)
-                                {{ $entity->postal_codes[0]->postal_code ?? 'N/A' }}
-                            @else
-                                N/A
-                            @endif
+                            {{ $entity->postal_codes[0]->postal_code ?? 'N/A' }}
                         </span>
                     </div>
                 </div>

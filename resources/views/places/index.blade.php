@@ -196,12 +196,9 @@
                     tr.className = 'border-b hover:bg-gray-50';
 
                     const county = place.county ? place.county.name : 'N/A';
-                    
-                    // Backend returns postal_codes array, get first one
-                    let postalCode = 'N/A';
-                    if (place.postal_codes && place.postal_codes.length > 0) {
-                        postalCode = place.postal_codes[0].postal_code;
-                    }
+                    const postalCode = place.postal_codes && place.postal_codes.length > 0 
+                        ? place.postal_codes[0].postal_code 
+                        : 'N/A';
                     
                     const operations = `
                         <a href="/places/${place.id}" class="text-blue-600 hover:underline">Nézet</a>
