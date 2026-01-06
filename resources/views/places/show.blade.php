@@ -28,8 +28,8 @@
                     </div>
                 </div>
 
-                <div class="flex space-x-4">
-                    <a href="{{ route('places.index') }}" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+                <div style="display:flex; gap:12px;">
+                    <a href="{{ route('places.index') }}" style="padding:10px 16px; background:#4b5563; color:#fff; border:1px solid #374151; border-radius:6px; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer;">
                         Vissza
                     </a>
                 </div>
